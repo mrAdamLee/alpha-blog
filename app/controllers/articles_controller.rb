@@ -8,12 +8,17 @@ class ArticlesController < ApplicationController
   end
 
   def new 
-
+    @article = Article.new #<--initiate an article with nothing in it so we can check for validation errors and flash them on view
   end
 
   def create 
     @article = Article.new(params.require(:article).permit(:title, :description))
-    @article.save
-    redirect_to article_path(@article)#<--extracts id and redirects to articles/:id
+    if @article.save
+      flash[:notice] = "Article was created succesfully."
+      redirect_to @article #<--extracts id and redirects to articles/:id
+    else 
+      render :new, status: 422 #<-- turbo expecting redirect, cant have 200 and not reload, this makes it so we dont reload but gets status
+    end
+
   end
 end
