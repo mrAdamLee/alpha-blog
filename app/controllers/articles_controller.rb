@@ -3,7 +3,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
   end
 
-  def indexh
+  def index
     @articles = Article.all
   end
 end
