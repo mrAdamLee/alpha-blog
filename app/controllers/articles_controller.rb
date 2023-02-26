@@ -7,6 +7,14 @@ class ArticlesController < ApplicationController
     @articles = Article.all
   end
 
+  def update 
+
+  end
+
+  def edit 
+    @article = Article.find(params[:id])
+  end
+
   def new 
     @article = Article.new #<--initiate an article with nothing in it so we can check for validation errors and flash them on view
   end
