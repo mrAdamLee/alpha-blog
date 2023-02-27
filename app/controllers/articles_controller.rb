@@ -26,6 +26,15 @@ class ArticlesController < ApplicationController
     @article = Article.new #<--initiate an article with nothing in it so we can check for validation errors and flash them on view
   end
 
+  def destroy
+    #TODO: do this with a partial and turbolinks/streams, ie dont redirect the user.
+    @article = Article.find(params[:id])
+    if @article.destroy
+      flash[:notice] = "Article deleted successfully"
+      redirect_to articles_path
+    end
+  end
+
   def create 
     @article = Article.new(params.require(:article).permit(:title, :description))
     if @article.save
