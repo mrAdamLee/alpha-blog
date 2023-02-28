@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
+  before_action :set_article, only: [:show, :update, :edit, :destroy]
   def show
-    @article = set_article
   end
 
   def index
@@ -8,9 +8,7 @@ class ArticlesController < ApplicationController
   end
 
   def update
-
-    @article = set_article()
-    if @article.update(params.require(:article).permit(:title, :description))
+    if @article.update(article_params)
       flash[:notice] = "Article has been successfully updated."
       redirect_to @article
     else 
@@ -19,7 +17,6 @@ class ArticlesController < ApplicationController
   end
 
   def edit 
-    @article = set_article
   end
 
   def new 
@@ -28,7 +25,6 @@ class ArticlesController < ApplicationController
 
   def destroy
     #TODO: do this with a partial and turbolinks/streams, ie dont redirect the user.
-    @article = set_article
     if @article.destroy
       flash[:notice] = "Article deleted successfully"
       redirect_to articles_path
@@ -36,7 +32,7 @@ class ArticlesController < ApplicationController
   end
 
   def create 
-    @article = Article.new(params.require(:article).permit(:title, :description))
+    @article = Article.new(article_params)
     if @article.save
       flash[:notice] = "Article was created succesfully."
       redirect_to @article #<--extracts id and redirects to articles/:id
@@ -51,5 +47,9 @@ class ArticlesController < ApplicationController
 
   def set_article
     @article = Article.find(params[:id])
+  end
+
+  def article_params
+    params.require(:article).permit(:title, :description)
   end
 end
