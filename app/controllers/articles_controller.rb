@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
   def show
-    @article = Article.find(params[:id])
+    @article = set_article
   end
 
   def index
@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
 
   def update
 
-    @article = Article.find(params[:id])
+    @article = set_article()
     if @article.update(params.require(:article).permit(:title, :description))
       flash[:notice] = "Article has been successfully updated."
       redirect_to @article
@@ -19,7 +19,7 @@ class ArticlesController < ApplicationController
   end
 
   def edit 
-    @article = Article.find(params[:id])
+    @article = set_article
   end
 
   def new 
@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
 
   def destroy
     #TODO: do this with a partial and turbolinks/streams, ie dont redirect the user.
-    @article = Article.find(params[:id])
+    @article = set_article
     if @article.destroy
       flash[:notice] = "Article deleted successfully"
       redirect_to articles_path
@@ -44,5 +44,12 @@ class ArticlesController < ApplicationController
       render :new, status: 422 #<-- turbo expecting redirect, cant have 200 and not reload, this makes it so we dont reload but gets status
     end
 
+  end
+
+
+  private 
+
+  def set_article
+    @article = Article.find(params[:id])
   end
 end
